@@ -45,6 +45,7 @@ public:
 	bool set_antenna(int antenna);
 	bool set_gain(float gain);
 	bool set_dithering(bool enable);
+	bool set_opt_string(const char *opts, int verbose);
 	void start();
 	void stop();
 	int flush(unsigned int flush_count = FLUSH_COUNT);

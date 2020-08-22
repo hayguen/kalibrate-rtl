@@ -177,6 +177,12 @@ bool usrp_source::set_gain(float gain) {
 	return (r < 0) ? 0 : 1;
 }
 
+bool usrp_source::set_opt_string(const char *opts, int verbose) {
+	int r = rtlsdr_set_opt_string(dev, opts, verbose);
+	return ( r >= 0 );
+}
+
+
 
 /*
  * open() should be called before multiple threads access usrp_source.

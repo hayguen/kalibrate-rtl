@@ -92,6 +92,7 @@ void usage(char *prog) {
 	printf("\t-g\tgain in dB\n");
 	printf("\t-d\trtl-sdr device index\n");
 	printf("\t-e\tinitial frequency error in ppm\n");
+	printf("%s", rtlsdr_get_opt_help(1) );
 #if HAVE_DITHERING == 1
 	printf("\t-N\tdisable dithering (default: dithering enabled)\n");
 #endif
@@ -113,9 +114,10 @@ int main(int argc, char **argv) {
 	long int fpga_master_clock_freq = 52000000;
 	float gain = 0;
 	double freq = -1.0, fd;
+	const char * rtlOpts = NULL;
 	usrp_source *u;
 
-	while((c = getopt(argc, argv, "f:c:s:b:R:A:g:e:E:Nd:vDh?")) != EOF) {
+	while((c = getopt(argc, argv, "f:c:s:b:R:A:g:e:E:O:Nd:vDh?")) != EOF) {
 		switch(c) {
 			case 'f':
 				freq = strtod(optarg, 0);
@@ -201,6 +203,10 @@ int main(int argc, char **argv) {
 
 			case 'E':
 				hz_adjust = strtol(optarg, 0, 0);
+				break;
+
+			case 'O':
+				rtlOpts = optarg;
 				break;
 
 			case 'd':
@@ -290,6 +296,10 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "error: usrp_source::set_gain\n");
 			return -1;
 		}
+	}
+
+	if (rtlOpts) {
+		u->set_opt_string(rtlOpts, g_verbosity);
 	}
 
 	if (ppm_error != 0) {
