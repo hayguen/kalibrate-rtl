@@ -185,11 +185,12 @@ bool usrp_source::set_gain(float gain) {
 	return (r < 0) ? 0 : 1;
 }
 
+#if RTLSDR_HANDLE_SET_OPT
 bool usrp_source::set_opt_string(const char *opts, int verbose) {
 	int r = rtlsdr_set_opt_string(dev, opts, verbose);
 	return ( r >= 0 );
 }
-
+#endif
 
 
 /*

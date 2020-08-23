@@ -30,6 +30,8 @@
 #include "usrp_complex.h"
 #include "circular_buffer.h"
 
+#define RTLSDR_HANDLE_SET_OPT		0
+
 
 class usrp_source {
 public:
@@ -45,7 +47,9 @@ public:
 	bool set_antenna(int antenna);
 	bool set_gain(float gain);
 	bool set_dithering(bool enable);
+#if RTLSDR_HANDLE_SET_OPT
 	bool set_opt_string(const char *opts, int verbose);
+#endif
 	void start();
 	void stop();
 	int flush(unsigned int flush_count = FLUSH_COUNT);

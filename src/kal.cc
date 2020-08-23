@@ -92,7 +92,9 @@ void usage(char *prog) {
 	printf("\t-g\tgain in dB\n");
 	printf("\t-d\trtl-sdr device index\n");
 	printf("\t-e\tinitial frequency error in ppm\n");
+#if RTLSDR_HANDLE_SET_OPT
 	printf("%s", rtlsdr_get_opt_help(1) );
+#endif
 #if HAVE_DITHERING == 1
 	printf("\t-N\tdisable dithering (default: dithering enabled)\n");
 #endif
@@ -301,7 +303,11 @@ int main(int argc, char **argv) {
 	}
 
 	if (rtlOpts) {
+#if RTLSDR_HANDLE_SET_OPT
 		u->set_opt_string(rtlOpts, g_verbosity);
+#else
+		fprintf(stderr, "warning: ignoring RTLSDR options '%s' in this build\n", rtlOpts);
+#endif
 	}
 
 	if (ppm_error != 0) {
