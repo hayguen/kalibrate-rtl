@@ -166,6 +166,14 @@ bool usrp_source::set_dithering(bool enable) {
 bool usrp_source::set_gain(float gain) {
 	int r, g = gain * 10;
 
+	if (gain == 0.0F) {
+		/* Enable automatic gain */
+		r = rtlsdr_set_tuner_gain_mode(dev, 0);
+		if (r < 0)
+			fprintf(stderr, "WARNING: Failed to activate automatic gain.\n");
+		return (r < 0) ? false : true;
+	}
+
 	/* Enable manual gain */
 	r = rtlsdr_set_tuner_gain_mode(dev, 1);
 	if (r < 0)

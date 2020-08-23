@@ -113,6 +113,7 @@ int main(int argc, char **argv) {
 	unsigned int subdev = 0, decimation = 192;
 	long int fpga_master_clock_freq = 52000000;
 	float gain = 0;
+	bool haveGain = false;
 	double freq = -1.0, fd;
 	const char * rtlOpts = NULL;
 	usrp_source *u;
@@ -180,6 +181,7 @@ int main(int argc, char **argv) {
 
 			case 'g':
 				gain = strtof(optarg, 0) * 10;
+				haveGain = true;
 				break;
 
 			case 'F':
@@ -291,7 +293,7 @@ int main(int argc, char **argv) {
 	}
 
 //	u->set_antenna(antenna);
-	if (gain != 0) {
+	if ( haveGain ) {
 		if(!u->set_gain(gain)) {
 			fprintf(stderr, "error: usrp_source::set_gain\n");
 			return -1;
